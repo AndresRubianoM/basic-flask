@@ -3,16 +3,12 @@ from flask_bootstrap import Bootstrap
 
 import unittest
 
-
 from app import create_app
-from app.forms import LoginForm
+
 
 app = create_app()
 
 todos = ['Comprar Café ', 'Enviar Solicitud ', 'Entregar Producto']
-
-
-
 
 
 @app.route('/')

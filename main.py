@@ -21,24 +21,24 @@ def index():
     return response 
 
     
-@app.route('/hello', methods = ['GET', 'POST'])
+@app.route('/hello')
 def hello():
     user_ip = session.get('user_ip')
-    login_form = LoginForm()
+    #login_form = LoginForm()
     username = session.get('username')
 
 
     context = {'user_ip': user_ip,
                 'username': username,
                 'todos': todos,
-                'login_form': login_form}
+                }
 
-    if login_form.validate_on_submit():
-        username = login_form.username.data
-        session['username'] = username
-        flash('Nombre de usuario registrado con éxito')
+    #if login_form.validate_on_submit():
+    #    username = login_form.username.data
+    #    session['username'] = username
+    #    flash('Nombre de usuario registrado con éxito')
 
-        return redirect(url_for('index'))
+    #    return redirect(url_for('index'))
 
 
 

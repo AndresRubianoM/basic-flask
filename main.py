@@ -6,9 +6,11 @@ import unittest
 from app import create_app
 
 
+from app.firestore_service import get_users
+from app.firestore_service import get_todos
+
 app = create_app()
 
-todos = ['Comprar Café ', 'Enviar Solicitud ', 'Entregar Producto']
 
 
 @app.route('/')
@@ -30,7 +32,7 @@ def hello():
 
     context = {'user_ip': user_ip,
                 'username': username,
-                'todos': todos,
+                'todos': get_todos(user_id = username),
                 }
 
     #if login_form.validate_on_submit():
@@ -39,6 +41,13 @@ def hello():
     #    flash('Nombre de usuario registrado con éxito')
 
     #    return redirect(url_for('index'))
+
+    users = get_users()
+
+    for user in users:
+        print('HEEEEEERRREEEEEE')
+        print('user: ', user.id)
+        print(user.to_dict()['password'])
 
 
 

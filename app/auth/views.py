@@ -1,24 +1,61 @@
 from flask import render_template, flash, redirect, url_for, session
+from flask_login import login_user, login_required, logout_user
+
 
 #Local Imports
+#blueprint
 from . import auth
+#form class
 from ..forms import LoginForm
+#Conntection to the db
+from ..firestore_service import get_user
+#Classes for login user 
+from ..models import UserData, UserModel
 
 @auth.route('/login', methods = ['GET', 'POST'])
 def login():
     
+    #Create the instance of the login form 
     login_form = LoginForm()
     
     context = {
                 'login_form': login_form,
     }
 
-    #Set the info to  write the flash message
+    #Validates the information from the login form
     if login_form.validate_on_submit():
         username = login_form.username.data
-        session['username'] = username
-        flash('Nombre de usuario registrado con éxito')
+        password = login_form.password.data
+
+        user_doc = get_user(username)
+
+        if user_doc.to_dict() is not None:
+            password_from_db = user_doc.to_dict()['password']
+
+            if password == password_from_db:
+                #user_data = UserData(username, password)
+                #user = UserModel(user_data)
+                user = UserModel.query(username)
+                
+                login_user(user)
+
+                flash('Welcome Again')
+
+                return redirect(url_for('index'))
+            else:
+                flash('The password is wrong')
+
+        else:
+            flash('The user youre looking for doesnt exists')
 
         return redirect(url_for('index'))
 
     return render_template('login.html', **context)
+
+
+@auth.route('logout')
+@login_required
+def logout():
+    logout_user()
+    flash('Comeback')
+    return redirect(url_for('auth.login'))

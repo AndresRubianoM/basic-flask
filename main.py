@@ -1,16 +1,19 @@
 from flask import Flask, request, make_response, redirect, render_template, session, url_for, flash
 from flask_bootstrap import Bootstrap
-
+from flask_login import login_required, current_user
 import unittest
 
+
+#Local Imports
+#Init the app function
 from app import create_app
-
-
+#Functions what gets the info from the data base connection
 from app.firestore_service import get_users
 from app.firestore_service import get_todos
 
-app = create_app()
 
+#Init the app 
+app = create_app()
 
 
 @app.route('/')
@@ -24,32 +27,16 @@ def index():
 
     
 @app.route('/hello')
+@login_required
 def hello():
     user_ip = session.get('user_ip')
-    #login_form = LoginForm()
-    username = session.get('username')
-
+    username = current_user.id
 
     context = {'user_ip': user_ip,
                 'username': username,
                 'todos': get_todos(user_id = username),
                 }
-
-    #if login_form.validate_on_submit():
-    #    username = login_form.username.data
-    #    session['username'] = username
-    #    flash('Nombre de usuario registrado con éxito')
-
-    #    return redirect(url_for('index'))
-
-    users = get_users()
-
-    for user in users:
-        print('HEEEEEERRREEEEEE')
-        print('user: ', user.id)
-        print(user.to_dict()['password'])
-
-
+   
 
     return render_template('hello.html', **context)
 

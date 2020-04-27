@@ -1,5 +1,7 @@
 from flask_login import UserMixin
 
+#local imports
+#Get info from db
 from .firestore_service import get_user
 
 

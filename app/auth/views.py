@@ -2,6 +2,7 @@ from flask import render_template, flash, redirect, url_for, session
 from flask_login import login_user, login_required, logout_user
 
 
+
 #Local Imports
 #blueprint
 from . import auth

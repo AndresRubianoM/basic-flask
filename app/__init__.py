@@ -2,8 +2,12 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 
+#local imports
+#blueprint
 from .auth import auth 
+#Configuration of the app
 from .config import Config
+#classes for login
 from .models import UserModel
 
 
